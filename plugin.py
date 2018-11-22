@@ -101,6 +101,7 @@ class BasePlugin:
         self.unpacker = msgpack.Unpacker(encoding='utf-8')
 
     def onStart(self):
+        Domoticz.Heartbeat(20)
         if Parameters['Mode4'] == 'Debug':
             Domoticz.Debugging(1)
             DumpConfigToLog()
