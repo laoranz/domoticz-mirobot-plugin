@@ -7,22 +7,23 @@
 
 ## How it works
 
-Plugin provides: Status, Control, Fan Level, Battery, Care status devices
+Plugin provides: Status, Control, Fan Level, Battery, Care status devices, Zone Control, Target Control
 
 **Status**: show current status in readable layout of switch. Status updates by polls 
 (interval) and when you click Control device (for instant status change).
+since ```0.1.4``` Battery Level added to status
 
 **Control**: for sending commands.
 
 **Fan Level**: for adjusting suction power. (MiHome app related: Quiet=38, Balanced=60, Turbo=77, Max=90)
 
-**Battery**: since ```0.0.4``` as new device
+**Battery**: since ```0.1.4``` removed
 
 **Care**: since ```0.1.0``` new 5 devices (care status + reset tool)
 
->Since ```0.1.0``` plugin uses wrapper-server for python-miio lib. It helps to use this plugin in Domoticz without blocking mode.
+**Zone Control**
 
->Since ```0.1.2``` wrapper-server (MIIO Server) runs outside plugin due limits of domoticz python plugin system.
+**Target Control** 
 
 ## Installation
 
@@ -45,17 +46,17 @@ Also need to install virtualenv:
 Then go to plugins folder and clone repository:
 ```
 cd domoticz/plugins
-git clone https://github.com/mrin/domoticz-mirobot-plugin.git xiaomi-mirobot
+git clone https://github.com/Markourai/domoticz-mirobot-plugin.git xiaomi-mirobot
 cd xiaomi-mirobot
 virtualenv -p python3 .env
 source .env/bin/activate
 
 # and then:
 pip3 install -r pip_req.txt 
-# or pip3 install gevent msgpack-python python-miio==0.3.1
+# or pip3 install gevent msgpack-python python-miio
 ```
 
-Since ```0.1.2``` need some prepare of **MIIO Server** to run as service:
+Need some prepare of **MIIO Server** to run as service:
 1. Open and edit miio_server.sh by vi/nano:
 ```
 nano miio_server.sh
@@ -122,10 +123,16 @@ Now go to **Setup** -> **Hardware** in your Domoticz interface and add type with
 | Field | Information|
 | ----- | ---------- |
 | Data Timeout | Keep Disabled |
-| MIIOServer host:port | by default 127.0.0.1:22222 |
+| MIIOServer IP Address: | by default 127.0.0.1 |
+| MIIOServer Port: | by default 22222 |
+| Zones: | JSON eg ```{"10":["bedroom",[[23700,24900,30300,28700,1]]], "20":["kitchen", [[17800,27800,22400,31000,1]]]}``` Level, Zone name, 4 Zone coordinates, times to repeat  |
+| Targets: | JSON eg ```{"10":["Target",[21700,27400]]}``` Level, Target name, Target coordinates  |
 | Update interval | In seconds, this determines with which interval the plugin polls the status of Vacuum. Suggested is no lower then 5 sec due timeout in python-mirobo lib, but you can try any.  |
 | Fan Level Type | ```Standard``` - standard set of buttons (values supported by MiHome); ```Slider``` - allow to set custom values, up to 100 (in standard Max=90) (values not supported by MiHome) |
 | Debug | When set to true the plugin shows additional information in the Domoticz log |
+
+## How to find zone cordinates
+Check the [instruction](https://www.npmjs.com/package/homebridge-xiaomi-roborock-vacuum-zones)
 
 After clicking on the Add button the new devices are available in **Setup** -> **Devices**.
 
@@ -144,6 +151,9 @@ sudo service domoticz.sh restart
 ```
 
 ## Screenshots
+![RR_Status](https://user-images.githubusercontent.com/25368137/54459874-f98e2200-4778-11e9-8d3f-ad9770937111.jpg)
+![RR_Zone](https://user-images.githubusercontent.com/25368137/54459902-1165a600-4779-11e9-88d2-675f60848e22.jpg)
+![RR_Target](https://user-images.githubusercontent.com/25368137/54459912-1a567780-4779-11e9-9e1d-c41657def6ca.jpg)     
 
 ![status_unit](https://user-images.githubusercontent.com/93999/29568433-0da95692-8759-11e7-8706-344c02536d6a.png)
 ![control_unit](https://user-images.githubusercontent.com/93999/29568435-13645e10-8759-11e7-92d8-5fe130912c78.png)
