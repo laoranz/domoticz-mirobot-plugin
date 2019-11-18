@@ -57,7 +57,6 @@ for sig in [signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT]:
     signal.signal(sig, signal_handler)
 ### ./for run as service
 
-
 def socket_incoming_connection(socket, address):
 
     logger.debug('connected %s', address)
@@ -80,15 +79,12 @@ def socket_incoming_connection(socket, address):
 
     sockets.pop(address)
 
-
 def socket_msg_sender(sockets, q):
     while True:
         msg = q.get()
         if isinstance(msg, OutMsg) and msg.to in sockets:
             sockets[msg.to].sendall(msgpack.packb(msg, use_bin_type=True))
             logger.debug('send reply %s', msg.to)
-
-
 
 def vacuum_commands_handler(ip, token, q):
     vac = Vacuum(ip, token, 0)
@@ -108,8 +104,6 @@ def vacuum_commands_handler(ip, token, q):
             result.update({'cmd': cmd})
             logger.debug('vac result %s', result)
             send.put(OutMsg(result, msg.to))
-
-
 
 class VacuumCommand(object):
 
@@ -157,6 +151,13 @@ class VacuumCommand(object):
     @classmethod
     def set_fan_level(cls, vac, level):
         return {'code': vac.set_fan_speed(int(level))}
+    
+    @classmethod
+    def zoned_clean(cls, vac, zones):
+        return {'code': vac.zoned_clean(zones)}
+    @classmethod
+    def goto(cls, vac, coord):
+        return {'code': vac.goto(int(coord[0]), int(coord[1]))}    
 
     @classmethod
     def consumable_status(cls, vac):
@@ -184,20 +185,17 @@ class VacuumCommand(object):
     def care_reset_sensor(cls, vac):
         return {'code': vac.send('reset_consumable', ['sensor_dirty_time'])}
 
-
 class InMsg(list):
     def __init__(self, data, to, **kwargs):
         super(InMsg, self).__init__(**kwargs)
         self.extend(data)
         self.to = to
 
-
 class OutMsg(dict):
     def __init__(self, data, to, **kwargs):
         super(OutMsg, self).__init__(**kwargs)
         self.update(data)
         self.to = to
-
 
 if __name__ == '__main__':
 
