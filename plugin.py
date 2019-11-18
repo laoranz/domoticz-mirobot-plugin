@@ -197,7 +197,7 @@ class BasePlugin:
                             Options=self.customSensorOptions).Create()
 
         if self.cSideBrushUnit not in Devices:
-            Domoticz.Device(Name='Care Side Brush', Unit=self.cSideBrushUnit, TypeName='Custom', Image=mbrushIconID,
+            Domoticz.Device(Name='Care Side Brush', Unit=self.cSideBrushUnit, TypeName='Custom', Image=brushIconID,
                             Options=self.customSensorOptions).Create()
 
         if self.cSensorsUnit not in Devices:
