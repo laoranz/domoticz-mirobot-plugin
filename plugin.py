@@ -8,7 +8,7 @@
         <param field="Address" label="MIIOServer IP Address" width="200px" required="true" default="127.0.0.1"/>
         <param field="Port" label="MIIOServer Port" width="60px" required="true" default="22222"/>
         <param field="Mode3" label="Zones" width="600px" required="false" default="{}"/>
-        <param field="Mode6" label="Targets" width="600px" required="true" default="{}"/>
+        <param field="Mode6" label="Targets" width="600px" required="false" default="{}"/>
         <param field="Mode2" label="Update interval (sec)" width="30px" required="true" default="15"/>
         <param field="Mode5" label="Fan Level Type" width="300px">
             <options>
