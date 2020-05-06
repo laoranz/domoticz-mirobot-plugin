@@ -98,6 +98,8 @@ class BasePlugin:
     cSensorsUnit = 8
     cFilterUnit = 9
     cResetControlUnit = 10
+    zoneControlUnit = 12
+    targetControlUnit = 13
 
     # statuses by protocol
     # https://github.com/marcelrv/XiaomiRobotVacuumProtocol/blob/master/StatusMessage.md
@@ -120,7 +122,7 @@ class BasePlugin:
         15: 'Docking',
         16: 'Go To',
         17: 'Zone cleaning',
-        100: 'Full'
+        100: 'Full',
         200: 'On the base'
     }
 
